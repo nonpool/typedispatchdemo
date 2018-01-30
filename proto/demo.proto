@@ -1,0 +1,13 @@
+syntax = "proto3";
+option java_package = "com.nonpool.proto";
+option java_multiple_files = true;
+
+message Frame {
+    string messageType = 1;
+
+    bytes payload = 15;
+}
+
+message TextMessage {
+    string  text = 1;
+}
