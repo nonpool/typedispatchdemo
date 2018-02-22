@@ -1,4 +1,4 @@
-# netty4 + protobuf3 demo
+# netty4 + protobuf3 最佳实践
 1. netty4+protobuf3多类型传输实现
 2. 优雅的实现消息分发
 
