@@ -6,6 +6,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 /**
+ * 消息分发器
+ *
  * @author nonpool
  * @version 1.0
  * @since 2018/1/29

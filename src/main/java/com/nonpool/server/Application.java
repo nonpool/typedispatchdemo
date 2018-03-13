@@ -18,6 +18,8 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 
 
 /**
+ * 服务端
+ *
  * @author nonpool
  * @version 1.0
  * @since 2018/1/29
