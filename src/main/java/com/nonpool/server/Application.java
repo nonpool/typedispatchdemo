@@ -1,6 +1,7 @@
 package com.nonpool.server;
 
 import com.nonpool.proto.Frame;
+import com.nonpool.server.customhandler.HandlerPool;
 import com.nonpool.server.handler.DispatchHandler;
 import com.nonpool.server.handler.SecondProtobufCodec;
 import io.netty.bootstrap.ServerBootstrap;
@@ -32,9 +33,12 @@ public class Application {
     }
 
     public static void main(String[] args) throws Exception {
+        HandlerPool handlerPool = new HandlerPool();
+        handlerPool.doHandler();
         int port = Integer.parseInt(args[0]);
         Application application = new Application(port);
         application.run();
+        handlerPool.getExecutorService().shutdown();
     }
 
 

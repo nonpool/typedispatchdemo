@@ -1,7 +1,9 @@
 package com.nonpool.server.handler;
 
 import com.google.protobuf.MessageLite;
-import com.nonpool.util.HandlerUtil;
+import com.nonpool.server.customhandler.HandlerDataModal;
+import com.nonpool.server.customhandler.buffer.InnerQueueBuffer;
+import com.nonpool.server.customhandler.buffer.MessageBuffer;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -14,10 +16,12 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  */
 public class DispatchHandler extends ChannelInboundHandlerAdapter {
 
+    private final MessageBuffer buffer = InnerQueueBuffer.getInstance();
+
     @Override
-    @SuppressWarnings("unchecked")
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        HandlerUtil.getHandlerInstance(msg.getClass().getSimpleName()).handler((MessageLite) msg,ctx);
+        //把解包完成的对象封装放入队列中异步处理
+        buffer.offer(new HandlerDataModal((MessageLite) msg, ctx));
     }
 
     @Override

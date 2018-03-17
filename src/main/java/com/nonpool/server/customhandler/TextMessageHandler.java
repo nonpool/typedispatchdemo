@@ -13,6 +13,6 @@ import io.netty.channel.ChannelHandlerContext;
 public class TextMessageHandler extends AbstractDataHandler<TextMessage> {
     @Override
     public void onEvent(TextMessage textMessage, ChannelHandlerContext ctx) throws Exception {
-        System.out.println(textMessage.getText());
+        System.out.println(Thread.currentThread().getName() + "------" + textMessage.getText());
     }
 }
