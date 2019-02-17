@@ -1,7 +1,6 @@
 package com.nonpool.util;
 
 
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
@@ -10,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
 /**
@@ -76,7 +76,7 @@ public abstract class ClassUtil {
     private static List<Class> getClasspathAllClass(boolean findInJar, String... packages) {
         String[] packagesTemp = new String[packages.length];
         for (int i = 0; i < packages.length; i++) {
-            packagesTemp[i] = packages[i].replaceAll("\\.", "/");
+            packagesTemp[i] = packages[i].replaceAll("\\.", Matcher.quoteReplacement(separator));
         }
 
         List<Class> ret = new LinkedList<>();
@@ -159,7 +159,7 @@ public abstract class ClassUtil {
     private static String getFullyQualifiedName(File file, String classpath) {
         String filePath = file.getPath();
         return filePath.replace(classpath, "")
-                .replaceAll("\\\\", ".")
+                .replaceAll(Matcher.quoteReplacement(separator), ".")
                 .replaceFirst(".", "")
                 .replace(".class", "");
     }
