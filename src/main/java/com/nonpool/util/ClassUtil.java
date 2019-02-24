@@ -56,12 +56,13 @@ public abstract class ClassUtil {
      * @param packages  限定寻找的包名，前缀匹配模式 findInJar为true时建议一定要限制包名提升速度和避免出错！
      * @return
      */
+    @SuppressWarnings("unchecked")
     public static List<Class> getAllClassBySubClass(Class clazz, boolean findInJar, String... packages) {
 
         List<Class> ret = getClasspathAllClass(findInJar, packages).stream()
                 .filter(c -> !c.isInterface())
                 .filter(c -> !Modifier.isAbstract(c.getModifiers()))
-                .filter(c -> clazz.isAssignableFrom(c))
+                .filter(clazz::isAssignableFrom)
                 .collect(Collectors.toList());
 
         return ret;
@@ -106,7 +107,7 @@ public abstract class ClassUtil {
             File[] files = file.listFiles();
             if (files != null && files.length > 0) {
                 for (File f : files) {
-                    ret.addAll(findClass(f, classpath, findInJar));
+                    ret.addAll(findClass(f, classpath, findInJar, packages));
                 }
             }
         } else if (file.isFile()) {
