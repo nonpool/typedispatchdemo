@@ -4,6 +4,7 @@ package com.nonpool.util;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,17 +24,27 @@ public abstract class ClassUtil {
     private static String separator = System.getProperty("file.separator");
 
     //运行时的classpath
-    private static String[] classPaths;
+    private static List<String> classPaths;
 
     static {
+        classPaths = new ArrayList<>();
+
         //windows和*inux路径分隔符不一样
         String osName = System.getProperty("os.name");
         String classPath = System.getProperty("java.class.path");
         if (osName.contains("Windows") || osName.contains("windows")) {
-            classPaths = classPath.split(";");
+            String[] strings = classPath.split(";");
+            for(String string:strings){
+                classPaths.add(string);
+            }
         } else {
-            classPaths = classPath.split(":");
+            String[] strings = classPath.split(":");
+            for(String string:strings){
+                classPaths.add(string);
+            }
         }
+
+        classPaths.add(System.getProperty("user.dir"));
     }
 
 
