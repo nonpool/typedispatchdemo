@@ -19,11 +19,10 @@ import java.util.stream.Collectors;
  */
 public abstract class ClassUtil {
 
-    //系统文件分隔符
-    private static String separator = System.getProperty("file.separator");
+    private static final String fileSeparator = System.getProperty("file.separator");
 
     //运行时的classpath
-    private static String[] classPaths;
+    private static final String[] classPaths;
 
     static {
         //windows和*inux路径分隔符不一样
@@ -43,7 +42,7 @@ public abstract class ClassUtil {
      * @param clazz 接口类或者父类
      * @return
      */
-    public static List<Class> getAllClassBySubClass(Class clazz, String... packages) {
+    public static List<Class<?>> getAllClassBySubClass(Class<?> clazz, String... packages) {
 
         return getAllClassBySubClass(clazz, false, packages);
     }
@@ -57,15 +56,13 @@ public abstract class ClassUtil {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static List<Class> getAllClassBySubClass(Class clazz, boolean findInJar, String... packages) {
+    public static List<Class<?>> getAllClassBySubClass(Class<?> clazz, boolean findInJar, String... packages) {
 
-        List<Class> ret = getClasspathAllClass(findInJar, packages).stream()
+        return getClasspathAllClass(findInJar, packages).stream()
                 .filter(c -> !c.isInterface())
                 .filter(c -> !Modifier.isAbstract(c.getModifiers()))
                 .filter(clazz::isAssignableFrom)
                 .collect(Collectors.toList());
-
-        return ret;
     }
 
 
@@ -74,13 +71,13 @@ public abstract class ClassUtil {
      *
      * @return
      */
-    private static List<Class> getClasspathAllClass(boolean findInJar, String... packages) {
+    private static List<Class<?>> getClasspathAllClass(boolean findInJar, String... packages) {
         String[] packagesTemp = new String[packages.length];
         for (int i = 0; i < packages.length; i++) {
-            packagesTemp[i] = packages[i].replaceAll("\\.", Matcher.quoteReplacement(separator));
+            packagesTemp[i] = packages[i].replaceAll("\\.", Matcher.quoteReplacement(fileSeparator));
         }
 
-        List<Class> ret = new LinkedList<>();
+        List<Class<?>> ret = new LinkedList<>();
 
         for (String classPath : classPaths) {
             File file = new File(classPath);
@@ -96,8 +93,8 @@ public abstract class ClassUtil {
      * @param classpath
      * @return
      */
-    private static List<Class> findClass(File file, String classpath, boolean findInJar, String... packages) {
-        List<Class> ret = new LinkedList<>();
+    private static List<Class<?>> findClass(File file, String classpath, boolean findInJar, String... packages) {
+        List<Class<?>> ret = new LinkedList<>();
         if (!file.exists()) {
             return ret;
         }
@@ -105,7 +102,7 @@ public abstract class ClassUtil {
         //是文件夹 递归查找
         if (file.isDirectory()) {
             File[] files = file.listFiles();
-            if (files != null && files.length > 0) {
+            if (files != null) {
                 for (File f : files) {
                     ret.addAll(findClass(f, classpath, findInJar, packages));
                 }
@@ -160,7 +157,7 @@ public abstract class ClassUtil {
     private static String getFullyQualifiedName(File file, String classpath) {
         String filePath = file.getPath();
         return filePath.replace(classpath, "")
-                .replaceAll(Matcher.quoteReplacement(separator), ".")
+                .replaceAll(Matcher.quoteReplacement(fileSeparator), ".")
                 .replaceFirst(".", "")
                 .replace(".class", "");
     }

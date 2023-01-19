@@ -18,13 +18,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class HandlerPool {
 
-    private int THREAD_POOL_SIZE = 4;
+    private final int THREAD_POOL_SIZE = 4;
 
     private final ExecutorService executorService;
 
     public HandlerPool() {
         executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE, new ThreadFactory() {
-            private AtomicInteger i = new AtomicInteger(0);
+            private final AtomicInteger i = new AtomicInteger(0);
             @Override
             public Thread newThread(Runnable r) {
                 Thread thread = new Thread(r);

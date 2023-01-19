@@ -42,7 +42,7 @@ public class HandlerGenerator {
 
         Map<String, String> dataModal = new HashMap<>();
         String handlerFilePath = "src/main/java/" + packagePath.replace('.', '/') + "/";
-        List<Class> classes = ClassUtil.getAllClassBySubClass(MessageLite.class, true, "com.nonpool.proto");
+        List<Class<?>> classes = ClassUtil.getAllClassBySubClass(MessageLite.class, true, "com.nonpool.proto");
         classes.stream()
                 .filter(claz -> !Objects.equals(claz, Frame.class))   //不包含Frame
                 .forEach(claz -> {

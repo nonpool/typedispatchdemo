@@ -23,7 +23,7 @@ public abstract class ParseFromUtil {
 
     static {
         //找到指定包下所有protobuf实体类
-        List<Class> classes = ClassUtil.getAllClassBySubClass(MessageLite.class, true, "com.nonpool.proto");
+        List<Class<?>> classes = ClassUtil.getAllClassBySubClass(MessageLite.class, true, "com.nonpool.proto");
         classes.stream()
                 .filter(protoClass -> !Objects.equals(protoClass, Frame.class))
                 .forEach(protoClass -> {

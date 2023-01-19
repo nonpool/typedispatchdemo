@@ -1,5 +1,6 @@
 package com.nonpool.util;
 
+import com.google.protobuf.MessageLite;
 import com.nonpool.annotation.HandlerMapping;
 import com.nonpool.server.customhandler.DataHandler;
 
@@ -20,8 +21,8 @@ public abstract class HandlerUtil {
     static {
         try {
             //扫描指定包下的所有DataHandler实现类
-            List<Class> classes = ClassUtil.getAllClassBySubClass(DataHandler.class, true,"com.nonpool");
-            for (Class claz : classes) {
+            List<Class<?>> classes = ClassUtil.getAllClassBySubClass(DataHandler.class, true,"com.nonpool");
+            for (Class<?> claz : classes) {
                 HandlerMapping annotation = (HandlerMapping) claz.getAnnotation(HandlerMapping.class);
                 //以其HandlerMapping的value为key handler实例为value缓存到map中
                 instanceCache.put(annotation.value(), (DataHandler) claz.newInstance());
