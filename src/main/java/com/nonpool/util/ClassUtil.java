@@ -4,6 +4,7 @@ package com.nonpool.util;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
+import java.nio.file.PathMatcher;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -168,7 +169,7 @@ public abstract class ClassUtil {
         }
 
         for (String p : packages) {
-            if (fileName.startsWith(p)) {
+            if (fileName.replace("\\","/").startsWith(p.replace("\\","/"))) {
                 return true;
             }
         }
