@@ -110,7 +110,7 @@ public abstract class ClassUtil {
         } else if (file.isFile()) {
             //是普通字节码文件
             String fileName = file.getName();
-            if (fileName.endsWith(".class") && isInPackages(classpath, packages)) {
+            if (fileName.endsWith(".class") && isInPackages(file.getPath().replace(classpath + separator, ""), packages)) {
                 String fullyQualifiedName = getFullyQualifiedName(file, classpath);
                 try {
                     ret.add(Class.forName(fullyQualifiedName));
